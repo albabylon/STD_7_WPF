@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmployeeManagement.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,18 @@ namespace EmployeeManagement.View
         public EmployeesView()
         {
             InitializeComponent();
+        }
+
+        private void ListView_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = (sender as ListView).SelectedItem;
+
+            if (item is null)
+                return;
+
+            var employee = item as Employee;
+
+            MessageBox.Show($"{employee.FirstName} {employee.LastName}, {employee.Age} лет, г.{employee.CityName}, {employee.CompanyName}");
         }
     }
 }
