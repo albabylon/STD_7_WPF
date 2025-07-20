@@ -6,14 +6,12 @@
     xmlns:local="clr-namespace:EmployeeManagement.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:EmployeeManagement.ViewModels"
-    Title="EmployessView"
+    Title="Список работников"
     Width="800"
     Height="450"
-    mc:Ignorable="d">
-
-    <Window.DataContext>
-        <vm:EmployeesViewModel />
-    </Window.DataContext>
+    mc:Ignorable="d"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize">
 
     <Grid>
         <Grid.RowDefinitions>

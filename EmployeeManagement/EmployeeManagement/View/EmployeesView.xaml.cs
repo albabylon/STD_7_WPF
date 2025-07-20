@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Models;
+using EmployeeManagement.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,16 @@ namespace EmployeeManagement.View
     /// </summary>
     public partial class EmployeesView : Window
     {
-        public EmployeesView()
+        IEmployeesViewModel _employeesViewModel;
+        IEmployeeViewModel _employeeViewModel;
+
+        public EmployeesView(IEmployeesViewModel employeesViewModel, IEmployeeViewModel employeeViewModel)
         {
             InitializeComponent();
+            DataContext = employeesViewModel;
+
+            _employeesViewModel = employeesViewModel;
+            _employeeViewModel = employeeViewModel;
         }
 
         private void ListView_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -34,7 +42,11 @@ namespace EmployeeManagement.View
 
             var employee = item as Employee;
 
-            MessageBox.Show($"{employee.FirstName} {employee.LastName}, {employee.Age} лет, г.{employee.CityName}, {employee.CompanyName}");
+            _employeeViewModel.Employee = employee;
+
+            var employeeView = new EmployeeView(_employeeViewModel);
+            employeeView.Owner = this;
+            employeeView.Show();
         }
     }
 }

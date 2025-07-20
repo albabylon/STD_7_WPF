@@ -5,19 +5,21 @@ using System.Runtime.CompilerServices;
 
 namespace EmployeeManagement.ViewModels
 {
-    public class EmployeesViewModel : INotifyPropertyChanged
+    public class EmployeesViewModel : INotifyPropertyChanged, IEmployeesViewModel
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        
-        private readonly EmployeeRepository _employeeRepository;
 
-        public EmployeesViewModel()
+        private readonly ILogger _logger;
+        private readonly IEmployeeRepository _employeeRepository;
+
+        public EmployeesViewModel(ILogger logger, IEmployeeRepository employeeRepository)
         {
-            _employeeRepository = new EmployeeRepository();
+            _logger = logger;
+            _employeeRepository = employeeRepository;
             FillListView();
             SetFilterStatus();
         }
@@ -27,7 +29,7 @@ namespace EmployeeManagement.ViewModels
         private ObservableCollection<Employee> _employees;
         public ObservableCollection<Employee> Employees
         {
-            get => new(_employeeRepository.GetAll());
+            get => _employees;
             set
             {
                 _employees = value;
@@ -65,7 +67,7 @@ namespace EmployeeManagement.ViewModels
             if (!string.IsNullOrEmpty(_filter))
             {
                 Employees = new ObservableCollection<Employee>(
-                  _employeeRepository.GetAll().Where(v => v.FirstName.Contains(_filter)));
+                  _employeeRepository.GetAll().Where(v => v.LastName.Contains(_filter)));
             }
             else
                 Employees = new ObservableCollection<Employee>(
